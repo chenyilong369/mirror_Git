@@ -6,6 +6,7 @@ const Redis = require('ioredis')
 const dev = process.env.NODE_ENV !== 'production' //  是否处于生产模式
 const app = next({ dev })
 const auth = require('./server/auth')
+const atob = require('atob')
 const koaBody = require('koa-body')
 
 const handle = app.getRequestHandler() // 处理http
@@ -13,6 +14,10 @@ const handle = app.getRequestHandler() // 处理http
 const redis = new Redis()
 const RedisSessionStore = require('./server/sessionStolre')
 const api = require('./server/api')
+
+// 全局设置方法
+global.atob = atob
+
 app.prepare().then(() => {
   // 预编译
   const server = new Koa()

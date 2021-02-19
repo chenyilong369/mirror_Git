@@ -5,8 +5,9 @@ import getConfig from 'next/config'
 import { connect } from 'react-redux'
 import Router, { withRouter } from 'next/router'
 import { StarTwoTone, MailFilled } from '@ant-design/icons'
-import Repo from '../components/repo'
+import Repo from '../components/Repo'
 import LRU from 'lru-cache'
+import {cacheArray} from '../lib/repo-basic-cache'
 const { publicRuntimeConfig } = getConfig()
 
 let cacheUserRepos, cacheUserStaredRepos
@@ -38,6 +39,14 @@ function Index({ userRepo, userStartt, user, router }) {
       }
     }
   }, [userRepo, userStartt])
+
+  useEffect(() => {
+    if (!isServer) {
+      cacheArray(userRepo)
+      cacheArray(userStartt)
+    }
+  })
+
   if (!user || !user.id) {
     return (
       <div className='root'>

@@ -1,21 +1,18 @@
 import Link from 'next/link'
 import {StarFilled} from '@ant-design/icons'
-import moment from 'moment'
+import {getLastUpdated} from '../lib/util'
 
 function getLicense(license) {
   return license ? `${license.spdx_id} license` : ''
 }
 
-function getListUpdated(time) {
-  return moment(time).fromNow()
-}
 
 export default ({ repo }) => {
   return (
     <div className='root'>
       <div className='basic-info'>
         <h3 className='repo-title'>
-          <Link href={`/detail?onwer=${repo.owner.login}&name=${repo.name}`}>
+          <Link href={`/detail?owner=${repo.owner.login}&name=${repo.name}`}>
             <a>{repo.full_name}</a>
           </Link>
         </h3>
@@ -24,7 +21,7 @@ export default ({ repo }) => {
           {
             repo.license ? (<span className='license'>{getLicense(repo.license)}</span>) : null
           }
-          <span className='last-updated'>{getListUpdated(repo.updated_at)}</span>
+          <span className='last-updated'>{getLastUpdated(repo.updated_at)}</span>
           <span className='open-issues'>{repo.open_issues_count}</span>
         </p>
       </div>
@@ -38,7 +35,6 @@ export default ({ repo }) => {
       <style jsx>{`
         .root {
           display: flex;
-          justify-content: center;
         }
         .other-info > span + span {
           margin-left: 10px;
